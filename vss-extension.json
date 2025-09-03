@@ -1,0 +1,77 @@
+{
+  "manifestVersion": 1,
+  "id": "liquibase",
+  "version": "0.0.1",
+  "name": "Liquibase",
+  "description": "Extensión de ejecución de Liquibase.",
+  "publisher": "banistmo",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "icons": {
+    "default": "icon.png"
+  },
+  "files": [
+    {
+      "path": "tasks",
+      "exclude": [
+        "**/node_modules/liquibase/dist/liquibase/licenses/commercial/**",
+        "**/node_modules/liquibase/dist/liquibase/internal/extensions/liquibase-checks.jar"
+      ]
+    }
+  ],
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "contributions": [
+    {
+      "id": "liquibase-license-service",
+      "type": "ms.vss-endpoint.service-endpoint-type",
+      "targets": [
+        "ms.vss-endpoint.endpoint-types"
+      ],
+      "properties": {
+        "name": "liquibaseLicenseService",
+        "displayName": "Liquibase License",
+        "url": {
+          "displayName": "Endpoint URL",
+          "helpText": "Any valid URL (required by Azure DevOps)",
+          "isVisible": true,
+          "value": "https://liquibase.com"
+        },
+        "authenticationSchemes": [
+          {
+            "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
+            "inputDescriptors": [
+              {
+                "id": "apitoken",
+                "name": "License Key",
+                "description": "Liquibase Pro license key",
+                "inputMode": "passwordBox",
+                "isConfidential": true,
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string"
+                }
+              }
+            ]
+          }
+        ],
+        "dataSources": [],
+        "helpMarkDown": "Securely store and reference the Liquibase Pro license key"
+      }
+    },
+    {
+      "id": "liquibase-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "tasks"
+      }
+    }
+  ]
+}

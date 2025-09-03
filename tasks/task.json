@@ -1,0 +1,254 @@
+{
+  "id": "e7069b83-b440-4f56-99c9-3ceb9f7f253d",
+  "name": "Liquibase",
+  "friendlyName": "#{friendlyName}#",
+  "description": "Liquibase",
+  "helpMarkDown": "DevOps",
+  "category": "DevOps",
+  "author": "DevOps Team Banistmo",
+  "runsOn": [
+    "Agent"
+  ],
+  "version": {
+    "Major": 0,
+    "Minor": 0,
+    "Patch": 1
+  },
+  "instanceNameFormat": "#{instanceNameFormat}#",
+  "inputs": [
+    {
+      "name": "platform",
+      "type": "pickList",
+      "required": true,
+      "label": "Plataforma",
+      "defaultValue": "nube",
+      "options": {
+        "nube": "Nube",
+        "onpremise": "On-Premise"
+      }
+    },
+    {
+      "name": "motor",
+      "type": "pickList",
+      "required": true,
+      "label": "Motor de Base de Datos",
+      "options": {
+        "sqlserver": "Sql Server",
+        "mysql": "MySql",
+        "documentDB": "documentDB",
+        "dynamodb": "DynamoDB",
+        "mariaDB": "Aurora MariaDB",
+        "postgresql": "PostgreSQL",
+        "oracle": "Oracle"
+      }
+    },
+    {
+      "name": "awsConnection",
+      "type": "connectedService:AWS",
+      "required": true,
+      "label": "AWS Connection",
+      "visibleRule": "platform = nube"
+    },
+    {
+      "name": "region",
+      "type": "pickList",
+      "required": false,
+      "label": "AWS Region",
+      "defaultValue": "us-east-1",
+      "visibleRule": "platform = nube",
+      "options": {
+        "us-east-2": "EE.UU. Este (Ohio)",
+        "us-east-1": "EE.UU. Este (Norte de Virginia)",
+        "us-west-1": "EE.UU. Oeste (Norte de California)",
+        "us-west-2": "EE.UU. Oeste (Oregón)",
+        "ap-east-1": "Asia Pacífico (Hong Kong)",
+        "ap-south-1": "Asia Pacífico (Mumbai)",
+        "ap-northeast-3": "Asia Pacífico (Osaka-local)",
+        "ap-northeast-2": "Asia Pacífico (Seúl)",
+        "ap-southeast-1": "Asia Pacífico (Singapur)",
+        "ap-southeast-2": "Asia Pacífico (Sídney)",
+        "ap-northeast-1": "Asia Pacífico (Tokio)",
+        "ca-central-1": "Canadá (Central)",
+        "cn-north-1": "China (Beijing)",
+        "cn-northwest-1": "China (Ningxia)",
+        "eu-central-1": "UE (Fráncfort)",
+        "eu-west-1": "UE (Irlanda)",
+        "eu-west-2": "UE (Londres)",
+        "eu-west-3": "UE (París)",
+        "eu-north-1": "UE (Estocolmo)",
+        "me-south-1": "Medio Oriente (Baréin)",
+        "sa-east-1": "América del Sur (São Paulo)",
+        "us-gov-east-1": "AWS GovCloud (US-East)",
+        "us-gov-west-1": "AWS GovCloud (EE.UU.)"
+      },
+      "properties": {
+        "EditableOptions": "True"
+      }
+    },
+    {
+      "name": "secret",
+      "type": "string",
+      "required": true,
+      "label": "Nombre del Secreto",
+      "visibleRule": "platform = nube"
+    },
+    {
+      "name": "jfrogConnection",
+      "type": "connectedService:jfrogArtifactoryService",
+      "required": true,
+      "label": "JFrog Connection"
+    },
+    {
+      "name": "licenseConnection",
+      "type": "connectedService:liquibaseLicenseService",
+      "required": false,
+      "label": "Liquibase License Connection",
+      "helpMarkDown": "Service connection that stores the Liquibase Pro license key"
+    },
+    {
+      "name": "command",
+      "type": "pickList",
+      "required": true,
+      "label": "Comando de Liquibase",
+      "options": {
+        "update": "update",
+        "updatewithcontext": "update with context",
+        "updatewithlabels": "update with labels",
+        "status": "status",
+        "validate": "validate",
+        "checksrun": "checks run",
+        "checksshow": "checks show",
+        "diff": "diff",
+        "changelogsync": "changelog sync",
+        "changelogsyncsql": "changelog sync SQL",
+        "clearchecksums": "clear checksums",
+        "dbdoc": "db doc",
+        "generatechangelog": "generate changelog",
+        "history": "history",
+        "listlocks": "list locks",
+        "releaselocks": "release locks",
+        "synchub": "sync hub",
+        "updatesql": "update SQL",
+        "autosnapshot": "auto snapshot",
+        "rollbackwithsnapshot": "rollback with snapshot",
+        "listsnapshots": "list snapshots",
+        "validatesnapshot": "validate snapshot",
+        "checklicense": "check license"
+      }
+    },
+    {
+      "name": "changeLogFile",
+      "type": "string",
+      "required": false,
+      "label": "Archivo de Changelog",
+      "defaultValue": "changelog.xml",
+      "helpMarkDown": "Ruta al archivo de changelog de Liquibase"
+    },
+    {
+      "name": "context",
+      "type": "string",
+      "required": false,
+      "label": "Contexto",
+      "helpMarkDown": "Contexto para ejecutar el comando de Liquibase"
+    },
+    {
+      "name": "labels",
+      "type": "string",
+      "required": false,
+      "label": "Etiquetas",
+      "helpMarkDown": "Etiquetas para ejecutar el comando de Liquibase"
+    },
+    {
+      "name": "logLevel",
+      "type": "pickList",
+      "required": false,
+      "label": "Nivel de Log",
+      "defaultValue": "info",
+      "options": {
+        "debug": "Debug",
+        "info": "Info",
+        "warn": "Warning",
+        "error": "Error"
+      }
+    },
+    {
+      "name": "outputDirectory",
+      "type": "string",
+      "required": false,
+      "label": "Directorio de Salida",
+      "helpMarkDown": "Directorio para archivos de salida (ej: dbDoc)"
+    },
+    {
+      "name": "outputFile",
+      "type": "string",
+      "required": false,
+      "label": "Archivo de Salida",
+      "helpMarkDown": "Archivo de salida (ej: generateChangelog)"
+    },
+    {
+      "name": "snapshotDescription",
+      "type": "string",
+      "required": false,
+      "label": "Descripción del Snapshot",
+      "helpMarkDown": "Descripción del snapshot automático (requerido para autoSnapshot)",
+      "visibleRule": "command = autosnapshot"
+    },
+    {
+      "name": "snapshotId",
+      "type": "string",
+      "required": false,
+      "label": "ID del Snapshot",
+      "helpMarkDown": "ID del snapshot para validar o hacer rollback",
+      "visibleRule": "command = validatesnapshot"
+    },
+    {
+      "name": "rollbackStrategy",
+      "type": "string",
+      "required": false,
+      "label": "Estrategia de Rollback",
+      "helpMarkDown": "JSON con la estrategia de rollback (requerido para rollbackWithSnapshot)",
+      "visibleRule": "command = rollbackwithsnapshot"
+    },
+    {
+      "name": "snapshotsDirectory",
+      "type": "string",
+      "required": false,
+      "label": "Directorio de Snapshots",
+      "defaultValue": "./snapshots",
+      "helpMarkDown": "Directorio donde se almacenan los snapshots"
+    },
+    {
+      "name": "licenseKey",
+      "type": "string",
+      "required": false,
+      "label": "Liquibase Pro License Key",
+      "helpMarkDown": "License key for Liquibase Pro features (optional for Pro users)"
+    },
+
+    {
+      "name": "checksSettingsFile",
+      "type": "string",
+      "required": false,
+      "label": "Checks Settings File",
+      "helpMarkDown": "Path to the checks settings YAML file (optional for checks run and checks show commands)",
+      "visibleRule": "command = checksrun || command = checksshow"
+    },
+    {
+      "name": "generateHtmlReport",
+      "type": "boolean",
+      "required": false,
+      "label": "Generate HTML Report",
+      "defaultValue": "true",
+      "helpMarkDown": "Generate HTML report for checks commands (Pro feature)",
+      "visibleRule": "command = checksrun || command = checksshow"
+    }
+  ],
+  "execution": {
+    "Node20_1": {
+      "target": "dist/index.js"
+    }
+  },
+  "messages": {
+    "RememberToken": "Recuerda habilitar en el agent job 'Allow scripts to access the OAuth token'"
+  }
+}

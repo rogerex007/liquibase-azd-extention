@@ -1,0 +1,26 @@
+{
+  "name": "liquibase",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc && npm run prune",
+    "postbuild": "rm -f \"node_modules/liquibase/dist/liquibase/licenses/commercial/Liquibase Pro EULA Software License Subscription and Support Agreement.txt\" && npm run fix-permissions",
+    "postinstall": "npm run fix-permissions && npm run update-liquibase",
+    "prune": "npm prune --production && npm run clean-jars",
+    "update-liquibase": "./update-liquibase.sh",
+    "clean-jars": "./clean-unnecessary-jars.sh",
+    "fix-permissions": "find node_modules/liquibase/dist/liquibase -name \"liquibase\" -o -name \"*.sh\" | xargs chmod +x"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudformation": "3.840.0",
+    "@aws-sdk/client-secrets-manager": "3.844.0",
+    "@aws-sdk/client-sts": "3.840.0",
+    "azure-pipelines-task-lib": "5.2.1",
+    "liquibase": "4.28.1"
+  },
+  "devDependencies": {
+    "rimraf": "6.0.1",
+    "ts-node": "10.9.2",
+    "typescript": "5.8.3"
+  }
+}

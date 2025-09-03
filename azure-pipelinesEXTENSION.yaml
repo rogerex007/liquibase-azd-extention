@@ -1,0 +1,45 @@
+variables:
+  # variable de grupo de artifactory
+  - group: Artifactory
+  # nombre del script de compilación
+  - name: commandBuild
+    value: "build"
+  # js= javascript y tsc= typescript
+  - name: appType
+    value: "tsc"
+  # versión que se descargará en el agente temporalmente, si no se agrega valor utiliza la versión por defecto del agente
+  - name: versionNode
+    value: "20.x"
+  # versión de Tfx que se descargará, formato v0.x.x
+  - name: versionTfx
+    value: "v0.21.x"
+  # se indica el directorio donde se ubica el package.json
+  - name: packageWorkingDir
+    value: "tasks"
+
+resources:
+  repositories:
+    - repository: template
+      type: git
+      name: DevOps/_git/templates-yaml
+      ref: "refs/heads/master" # indicamos la rama que apuntamos en el repositorios template-yaml, siempre debemos apuntar a master
+trigger:
+  - trunk
+
+name: $(date:yyyyMMdd)$(rev:.r)
+stages:
+  - stage:
+    jobs:
+      - job: CI
+        pool:
+          name: Docker-Agents
+        workspace:
+          clean: all
+        steps:
+          - template: build_AZURE_EXTENSION.yml@template #ref de template en otro repository
+            parameters:
+              commandBuild: ${{variables.commandBuild}}
+              appType: ${{variables.appType}}
+              versionNode: ${{variables.versionNode}}
+              versionTfx: ${{variables.versionTfx}}
+              packageWorkingDir: ${{variables.packageWorkingDir}}
